@@ -1,3 +1,4 @@
+// Импорт не используется, нужно убрать
 import express, { Express, Request, Response } from "express";
 import { PrismaClient } from '@prisma/client';
 import path from "path";
@@ -10,8 +11,9 @@ import postRouterApi from "./PostApp/postRouterApi";
 import commentRouterApi from "./CommentApp/commentRouterApi";
 import userApiRouter from "./UserApp/userRouterApi";
 
+// Здесь это не надо
 const getCurrentDate = require('./static/date');
-
+// Здесь это не надо
 const prisma = new PrismaClient();
 
 
@@ -42,7 +44,7 @@ app.use('/', commentRouter)
 app.use("/api/post/", postRouterApi)
 app.use("/api/comment/", commentRouterApi)
 app.use("/api/profile/", userApiRouter)
-
+// нужно убрать, уже есть api
 app.get('/comments', async (req, res) => {
     try {
       const comments = await prisma.comment.findMany();

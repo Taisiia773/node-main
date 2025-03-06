@@ -1,4 +1,5 @@
 import userRepository from "./userRepository"
+// Импорт не используется, нужно убрать
 import { IUser, IUserCreate } from "./types"
 import { IOkWithData ,IError, IOk } from "../types/types"
 import { hash , compare } from "bcryptjs"
@@ -58,7 +59,7 @@ async function authRegistration(userData: IUserCreate): Promise<IOkWithData<stri
 
     return { status: "ok", data: token };
 }
-
+// /me?
 const userService = {
     authLogin: authLogin,
     authRegistration: authRegistration

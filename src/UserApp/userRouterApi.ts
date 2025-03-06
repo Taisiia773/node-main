@@ -4,5 +4,5 @@ const userApiRouter = Router()
 
 userApiRouter.post("registration", userControllerApi.registerUser)
 userApiRouter.post("login", userControllerApi.authUser)
-
+// /me?
 export default userApiRouter

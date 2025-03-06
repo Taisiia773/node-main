@@ -11,12 +11,14 @@ async function findUserByEmail(email: string){
         })
         return user
     }catch (err){
+        // можно вынести в types
         if (err instanceof Prisma.PrismaClientKnownRequestError){
             const errorMessage = getErrorMessage(err.code);
             console.log(errorMessage);
             return errorMessage;
         }
         console.log(err)
+        // ярик привет)
         return "you don have enough power and motivation"
         }
     }

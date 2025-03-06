@@ -2,7 +2,7 @@ import { client, getErrorMessage } from "../client/prismaClient"
 import { Prisma } from "@prisma/client";
 import { ICommentCreate } from "./types";
 
-
+// табуляции
 async function getAllComments() {
   try {
     const comments = await client.comment.findMany();
