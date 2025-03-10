@@ -1,7 +1,5 @@
 import { client, getErrorMessage } from "../client/prismaClient";
 import { Prisma } from "@prisma/client"
-// Импорт не используется, нужно убрать
-import { IError } from "../types/types"
 
 async function getPostById(id: number){
     try {

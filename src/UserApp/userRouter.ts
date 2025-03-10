@@ -1,5 +1,5 @@
-// Импорт не используется, нужно убрать
-import express ,{Router} from "express" 
+// Импорт не используется, нужно убрать +
+import {Router} from "express" 
 import userController from "./userController"
 
 const router:Router = Router()

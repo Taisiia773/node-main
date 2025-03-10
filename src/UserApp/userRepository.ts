@@ -1,52 +1,73 @@
 import { client, getErrorMessage } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 
-
-async function findUserByEmail(email: string){
+async function findUserByEmail(email: string) {
     try {
+        console.log(email)
         const user = await client.user.findUnique({
             where: {
                 email: email
             }
-        })
-        return user
-    }catch (err){
-        // можно вынести в types
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
+        });
+        return user;
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
             const errorMessage = getErrorMessage(err.code);
             console.log(errorMessage);
             return errorMessage;
         }
-        console.log(err)
-        // ярик привет)
-        return "you don have enough power and motivation"
-        }
+        console.log(err);
+        return "error";
     }
+}
 
-
-
-async function createUser(data: Prisma.UserCreateInput){
+async function createUser(data: Prisma.UserCreateInput) {
     try {
+        console.log(data)
         const user = await client.user.create({
             data: data
-        })
-        return user
-    }catch (err){
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
+        });
+        return user;
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
             const errorMessage = getErrorMessage(err.code);
             console.log(errorMessage);
             return errorMessage;
         }
-        console.log(err)
-        return "you don have enough power and motivation"
-        }
+        console.log(err);
+        return "error";
     }
+}
 
-
+async function findUserById (id : number) {
+    try {
+        const user = await client.user.findUnique({
+            where:{
+                id :id
+            },
+            select: {
+                username: true, 
+                email: true, 
+                id: true,
+                role: true
+            },
+        });
+        return user;
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
+        }
+        console.log(err);
+        return "error";
+    }
+}
 
 const userRepository = {
-    findUserByEmail, 
-    createUser 
+    findUserByEmail,
+    createUser, 
+    findUserById
 }
 
 export default userRepository

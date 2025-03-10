@@ -1,9 +1,6 @@
 import commentRepository from './commentRepository';
-// Импорт не используется, нужно убрать
-import {Prisma} from "@prisma/client"
 import { IError, IOk ,IOkWithData} from "../types/types"
-// Импорт не используется, нужно убрать
-import { IComment, ICommentCreate, ICommentWithPosts} from "./types"
+import { IComment, ICommentCreate} from "./types"
 
 
 

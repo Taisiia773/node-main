@@ -1,8 +1,10 @@
 import {Router} from "express" 
 import userControllerApi from "./userControllerApi"
+import { authTokenMiddleware } from "../middlewares/authTokenMiddleware"
 const userApiRouter = Router()
 
 userApiRouter.post("registration", userControllerApi.registerUser)
 userApiRouter.post("login", userControllerApi.authUser)
-// /me?
+userApiRouter.get("/me" , authTokenMiddleware , userControllerApi.getUser)
+// /me? +
 export default userApiRouter

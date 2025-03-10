@@ -1,12 +1,11 @@
 import userRepository from "./userRepository"
-// Импорт не используется, нужно убрать
-import { IUser, IUserCreate } from "./types"
-import { IOkWithData ,IError, IOk } from "../types/types"
+import { User, UserCreate } from "./types"
+import { IOkWithData ,IError } from "../types/types"
 import { hash , compare } from "bcryptjs"
 import { SECRET_KEY } from "../config/token";
 import { sign } from "jsonwebtoken";
 
-async function authLogin(password: string, email: string): Promise<IOkWithData<string> | IError> {
+async function authLogin(email: string, password: string): Promise<IOkWithData<string> | IError> {
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) {
@@ -22,22 +21,35 @@ async function authLogin(password: string, email: string): Promise<IOkWithData<s
         return { status: "error", message: "Passwords are not passwords" };
     }
 
-    const token = sign(String(user.id), SECRET_KEY, { expiresIn: "1d" })
+    const token = sign({id: user.id}, SECRET_KEY, { expiresIn: "1d" })
 
     return { status: "ok", data: token };
 }
 
-async function authRegistration(userData: IUserCreate): Promise<IOkWithData<string> | IError> {
+
+async function getUserById (id : number):Promise <IOkWithData<User> | IError>{
+    const user = await userRepository.findUserById(id)
+    if (!user){
+        return { status: "error", message: "user not found" };
+    }
+    if (typeof user === "string") {
+        return { status: "error", message: user };
+    }
+    return {status : "ok" , data: user}
+}
+
+
+
+async function authRegistration(userData: UserCreate): Promise<IOkWithData<string> | IError> {
     const user = await userRepository.findUserByEmail(userData.email);
         
-    if (!user) {
+    if (user) {
         return { status: "error", message: "user not users" };
     }
 
     if (typeof user === "string") {
         return { status: "error", message: user };
     }
-    
 
     const hashedPassword = await hash(userData.password, 10)
     
@@ -52,17 +64,18 @@ async function authRegistration(userData: IUserCreate): Promise<IOkWithData<stri
     }
 
     if (!newUser) {
-        return { status: "error", message: "User is user" };
+        return { status: "error", message: "User is not user" };
     }
 
-    const token = sign(String(newUser.id), SECRET_KEY, { expiresIn: "1d" })
+    const token = sign({id: newUser.id}, SECRET_KEY, { expiresIn: "1d" })
 
     return { status: "ok", data: token };
 }
-// /me?
+
 const userService = {
     authLogin: authLogin,
-    authRegistration: authRegistration
+    authRegistration: authRegistration,
+    getUserById :getUserById 
 }
 
 export default userService

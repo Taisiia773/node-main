@@ -1,6 +1,5 @@
 // Импорт не используется, нужно убрать
-import express, { Express, Request, Response } from "express";
-import { PrismaClient } from '@prisma/client';
+import express, {  Request, Response } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import postRouter from './PostApp/postRouter'
@@ -11,10 +10,6 @@ import postRouterApi from "./PostApp/postRouterApi";
 import commentRouterApi from "./CommentApp/commentRouterApi";
 import userApiRouter from "./UserApp/userRouterApi";
 
-// Здесь это не надо
-const getCurrentDate = require('./static/date');
-// Здесь это не надо
-const prisma = new PrismaClient();
 
 
 const HOST = 'localhost'
@@ -44,15 +39,6 @@ app.use('/', commentRouter)
 app.use("/api/post/", postRouterApi)
 app.use("/api/comment/", commentRouterApi)
 app.use("/api/profile/", userApiRouter)
-// нужно убрать, уже есть api
-app.get('/comments', async (req, res) => {
-    try {
-      const comments = await prisma.comment.findMany();
-      res.json(comments);
-    } catch (error) {
-      res.status(500).json({ error: 'Error fetching comments' });
-    }
-  });
 
 app.listen(PORT, HOST, () => {
     console.log(`Server is running on port http://${HOST}:${PORT}`);
